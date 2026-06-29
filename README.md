@@ -124,14 +124,42 @@ This command generates:
 
 ---
 
-## Output
+## Main Pipeline Parameters
 
-For each microscopy stack, the pipeline produces:
+| Parameter         | Description                                                                                                                                                                         |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `input_dir`       | Directory containing input fluorescence microscopy TIFF stacks (`*.tif`).                                                                                                           |
+| `output_dir`      | Directory where prediction results, probability maps, and ImageJ ROI ZIP files will be saved.                                                                                       |
+| `chk_filename`    | Path to the trained Attention U-Net model checkpoint (`.pth`).                                                                                                                      |
+| `device`          | Computation device used for inference (`"cpu"` or `"cuda"`).                                                                                                                        |
+| `cell_threshold`  | Probability threshold applied to the predicted cell probability map before instance segmentation. Higher values produce more conservative detections.                               |
+| `focus_threshold` | Probability threshold applied to the predicted focus map. The focus predictions are generated and saved, and can optionally be used to suppress detections outside focused regions. |
+| `min_size`        | Minimum connected-component size (in pixels) retained after thresholding. Smaller components are removed as noise before watershed segmentation.                                    |
 
-* `*_cell_prob.npy`
-* `*_focus_prob.npy`
-* `*_binary.npy`
-* `*_labels.npy`
-* `*_predicted_cells.zip`
+### Example
 
+```python
+run_prediction_to_imagej_rois(
+    chk_filename="best_model.pth",
+    input_dir="example_data/",
+    output_dir="prediction_results/",
+    device="cuda",
+    cell_threshold=0.8,
+    focus_threshold=0.8,
+    min_size=25,
+)
+```
+
+### Generated Outputs
+
+For each input image stack, the pipeline generates:
+
+* `*_predicted_cells.zip` — ImageJ-compatible oval ROIs.
+* `*_cell_prob.npy` — Predicted cell probability map.
+* `*_focus_prob.npy` — Predicted focus probability map.
+* `*_binary.npy` — Binary segmentation mask after thresholding and postprocessing.
+* `*_labels.npy` — Watershed-generated instance labels.
+  
 The ROI ZIP file can be opened directly in ImageJ/Fiji for visualization and downstream quantitative analysis.
+
+Note: The current implementation assumes that each TIFF stack has the shape (Z, P, H, W), where Z is the number of z-slices and P=2 corresponds to two fluorescence frames (or channels) used as the network input. This documents an important assumption that's currently implicit in your code.
