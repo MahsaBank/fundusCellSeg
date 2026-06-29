@@ -12,9 +12,12 @@ The pipeline is designed to integrate directly with ImageJ/Fiji, allowing resear
 
 ```text
 .
+├── examples
 ├── train_model_v5.py
-├── cell_segmentation_roi_pipeline.py
 ├── inference_v5.py
+├── cell_segmentation_roi_pipeline.py
+├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
