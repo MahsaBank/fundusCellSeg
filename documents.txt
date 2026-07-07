@@ -1,0 +1,55 @@
+Python Package Requirements
+
+The following Python packages are required by this project:
+
+Standard Library
+
+-   os
+-   zipfile
+-   glob
+
+Numerical Computing
+
+-   numpy
+
+Deep Learning
+
+-   torch (PyTorch)
+
+MONAI
+
+-   monai
+    -   monai.transforms
+    -   monai.networks.nets
+    -   monai.data
+
+Image Processing
+
+-   scikit-image (skimage)
+    -   skimage.measure
+    -   skimage.morphology
+    -   skimage.feature
+    -   skimage.segmentation
+
+Scientific Computing
+
+-   scipy
+
+TIFF Image I/O
+
+-   tifffile
+
+ImageJ ROI Support
+
+-   roifile
+
+Installation
+
+    pip install numpy torch monai scikit-image scipy tifffile roifile
+
+The following modules are part of Python’s standard library and do not
+require installation:
+
+-   os
+-   zipfile
+-   glob
